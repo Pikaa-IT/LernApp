@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>4.0.6</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.example</groupId>
+	<artifactId>LernApp</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name/>
+	<description/>
+	<url/>
+	<licenses>
+		<license/>
+	</licenses>
+	<developers>
+		<developer/>
+	</developers>
+	<scm>
+		<connection/>
+		<developerConnection/>
+		<tag/>
+		<url/>
+	</scm>
+	<properties>
+		<java.version>21</java.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<!-- springdoc-openapi: generiert OpenAPI-Beschreibung und stellt
+            Swagger UI bereit. Aktuelle stabile Version prüfen auf
+            https://springdoc.org. Für Spring Boot 4 wird Version 3.x benötigt
+            (2.x bringt den gesamten Anwendungskontext zum Absturz). -->
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+		<dependency>
+			<!-- Bean Validation (Jakarta Validation) mit Hibernate Validator
+            als Implementierung. Aktiviert die @NotBlank, @Size, @Min, @Max-
+            Annotationen und die @Valid-Verarbeitung in Controllern. -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<dependency>
+			<!-- MariaDB JDBC-Treiber.
+            Verbindet Hibernate mit einer MariaDB/MySQL-Datenbank. Dieser
+            Treiber funktioniert auch mit dem MySQL, das XAMPP standardmässig
+            als MariaDB ausliefert. -->
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<!-- Spring Data JPA + Hibernate.
+            Stellt @Entity, @Id, @OneToMany/@ManyToOne, JpaRepository und
+            das automatische Generieren von SQL aus Repository-Methoden
+            (z.B. findByThemaId) bereit. Das Herzstück der Datenbankschicht. -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<!-- Test-Slice für @DataJpaTest (Spring Boot 4).
+            In SB3 war das Teil von spring-boot-starter-test. Seit SB4 ist
+            jedes Daten-Modul modularisiert und braucht seinen eigenen
+            Test-Starter. Ohne diese Dependency: Compile-Fehler
+            "Package org.springframework.boot.data.jpa.test.autoconfigure
+            ist nicht vorhanden". -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<!-- Basis-Web-Starter: REST-Controller (@RestController), JSON-
+            Verarbeitung und eingebetteter Tomcat-Server. -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<!-- Servlet-basierter MVC-Stack (Spring Boot 4).
+            Enthält die konkrete Spring-MVC-Implementierung (Gegenstück
+            zu spring-boot-starter-webflux für reaktive Anwendungen). -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webmvc</artifactId>
+		</dependency>
+
+		<dependency>
+			<!-- Test-Slice für @WebMvcTest / @AutoConfigureMockMvc (Spring Boot 4).
+            Stellt MockMvc und die zugehörigen Auto-Konfigurationen aus
+            org.springframework.boot.webmvc.test.autoconfigure bereit -
+            analog zu spring-boot-starter-data-jpa-test, nur für die Web-Schicht. -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webmvc-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<!-- Spring Security.
+            Aktuell so konfiguriert (SecurityConfig), dass alle Requests ohne
+            Login erlaubt sind und CSRF deaktiviert ist - notwendig, weil
+            Spring Boot 4 Security standardmässig aktiv schaltet, sobald
+            diese Dependency vorhanden ist. -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<!-- Test-Grundausstattung: JUnit 5, AssertJ, Mockito, Spring Test.
+            Basis fuer ALLE Tests (Unit-, Integrations- und E2E-Tests). -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<!-- H2 In-Memory-Datenbank.
+            Wird über application-test.properties für @DataJpaTest und
+            @SpringBootTest (Profil "test") als Ersatz für MariaDB genutzt.
+            kein scope = compile (Standard) -> H2 landet auch im
+            Produktions-Jar mit (etwas grösser, aber für ein Lernprojekt
+            unproblematisch). Mit <scope>runtime</scope> wäre H2 nur zur
+            Laufzeit/in Tests verfügbar, nicht beim Kompilieren - reicht
+            hier ebenfalls aus. -->
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+
+		<dependency>
+			<!-- Entwickler-Komfort: Automatischer Neustart der Anwendung bei
+            Code-Änderungen (Hot Reload). optional=true verhindert, dass
+            diese Dependency in die finale Jar eines Konsumenten "durchsickert". -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<!-- Code-Generierung per Annotationen: @Getter, @Setter, @Builder,
+            @NoArgsConstructor usw. Reduziert Boilerplate in Entities und DTOs. -->
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<!-- Jackson 2 Kern-Bibliothek (ObjectMapper, JSON-Serialisierung).
+            Wird normalerweise transitiv über spring-boot-jackson2 (siehe
+            unten) mitgebracht - explizite Angabe hier vermutlich aus der
+            Fehlersuche zum ObjectMapper-Problem entstanden. -->
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+
+		<dependency>
+			<!-- Jackson-2-Kompatibilitäts-Bridge für Spring Boot 4.
+            Stellt wieder einen ObjectMapper-Bean (Jackson 2) bereit, da SB4
+            standardmässig nur noch JsonMapper (Jackson 3) konfiguriert.
+            Offiziell deprecated, nur als Übergangslösung gedacht. -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-jackson2</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-compile</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<configuration>
+							<annotationProcessorPaths>
+								<path>
+									<groupId>org.projectlombok</groupId>
+									<artifactId>lombok</artifactId>
+								</path>
+							</annotationProcessorPaths>
+						</configuration>
+					</execution>
+					<execution>
+						<id>default-testCompile</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>testCompile</goal>
+						</goals>
+						<configuration>
+							<annotationProcessorPaths>
+								<path>
+									<groupId>org.projectlombok</groupId>
+									<artifactId>lombok</artifactId>
+								</path>
+							</annotationProcessorPaths>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

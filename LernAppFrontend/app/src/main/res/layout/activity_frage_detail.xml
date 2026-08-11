@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    activity_frage_detail.xml — Layout für FrageDetailActivity.
+
+    Dieser Bildschirm hat zwei Bereiche, vertikal gestapelt:
+      1. Blauer Header mit "Frage X von Y"
+      2. ViewPager2 für die wischbaren Fragekarten
+
+    Das Wurzel-LinearLayout füllt den gesamten Bildschirm aus
+    und stapelt seine Kinder von oben nach unten.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!--
+        HEADER — zeigt "Frage X von Y"
+
+        Horizontales LinearLayout als blauer Balken oben.
+        Zwei TextViews nebeneinander:
+          links:  "Frage 3" — groß, weiß, nimmt den gesamten verbleibenden Platz
+          rechts: "von 12"  — klein, hellblau, nur so breit wie nötig
+
+        match_parent bei width = volle Bildschirmbreite.
+        wrap_content bei height = nur so hoch wie Inhalt + Padding.
+        background="#1565C0" = dunkles Material-Blau (Blue 800).
+        padding="24dp" = Innenabstand an allen vier Seiten.
+        dp = density-independent pixels, gleiche optische Größe auf allen Geräten.
+        orientation="horizontal" = Kinder nebeneinander.
+        gravity="center_vertical" = Kinder vertikal zentriert (trotz verschiedener Schriftgrößen).
+    -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#1565C0"
+        android:padding="24dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!--
+            Linke TextView: aktuelle Fragennummer, z.B. "Frage 3".
+            Wird in FrageDetailActivity bei jedem Wischen aktualisiert:
+            textViewFrageNummer.setText("Frage " + (position + 1))
+
+            textSize="22sp" = große Schrift. sp skaliert mit der System-Schriftgröße
+                              des Nutzers — für Texte immer sp statt dp verwenden.
+            textStyle="bold" = fett.
+            textColor="#FFFFFF" = weiß, hoher Kontrast auf blauem Hintergrund.
+
+            layout_width="0dp" + layout_weight="1" = Standard-Trick in horizontalen
+            LinearLayouts: das Element bekommt den GESAMTEN verbleibenden Platz,
+            nachdem alle Elemente ohne layout_weight ihren Platz genommen haben.
+            Ergebnis: "Frage 3" streckt sich nach rechts, "von 12" klebt am rechten Rand.
+        -->
+        <TextView
+            android:id="@+id/textViewFrageNummer"
+            android:text="Frage 1"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <!--
+            Rechte TextView: Gesamtanzahl der Fragen, z.B. "von 12".
+            Wird in FrageDetailActivity einmalig gesetzt:
+            textViewFrageCount.setText("von " + fragen.size())
+            Ändert sich nicht beim Wischen.
+
+            textSize="14sp" = kleinere Schrift, weniger wichtig als die Nummer links.
+            textColor="#90CAF9" = hellblau (Material Blue 200), visuell abgestuft
+                                  gegenüber dem weißen Text links.
+            layout_width="wrap_content" = nur so breit wie der Text.
+            Kein layout_weight = kein Anspruch auf Extra-Platz, klebt am rechten Rand.
+        -->
+        <TextView
+            android:id="@+id/textViewFrageCount"
+            android:text="von 10"
+            android:textSize="14sp"
+            android:textColor="#90CAF9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <!--
+        VIEWPAGER2 — die wischbaren Fragekarten
+
+        Zeigt immer genau eine Fragekarte an, horizontales Wischen
+        wechselt zur nächsten/vorherigen Frage.
+        Intern verwendet ViewPager2 eine RecyclerView — deshalb
+        funktioniert FrageDetailAdapter direkt damit.
+
+        In FrageDetailActivity zugewiesen:
+            viewPager.setAdapter(adapter)
+            viewPager.setCurrentItem(startPosition, false)
+
+        layout_width="match_parent" = volle Breite.
+        layout_height="match_parent" = füllt den GESAMTEN verbleibenden Platz
+        unterhalb des Headers aus (da der Header nur wrap_content hoch ist).
+    -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

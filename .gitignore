@@ -1,0 +1,85 @@
+# ============================================================
+# Persönliche und lokale Daten - gehören NIE ins Repository
+# ============================================================
+
+# Enthält den SDK-Pfad des jeweiligen Rechners inkl. Benutzernamen
+local.properties
+
+# Projektdokumentation mit Namen und Betriebsangaben
+*.docx
+*.doc
+
+# Bildschirmaufnahmen (zeigen Desktop, Pfade, offene Fenster)
+*.webm
+*.mp4
+
+# IDE-Konfiguration mit lokalen Pfaden
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+
+# ============================================================
+# Fremdes Material - nicht selbst erstellt
+# ============================================================
+
+# Prüfungs-Lernkarten (PDFs, Anki-Deck, CSV-Exporte)
+Lernkarten/
+
+# scrcpy: eigenständiges Werkzeug zur Bildschirmspiegelung
+LernAppFrontend/scrcpy-win64-v4.0/
+LernAppFrontend/scrcpy-win64-v4.0.zip
+
+# Gerätedaten
+LernAppFrontend/Galaxy_S24_Ultra/
+LernAppFrontend/Galaxy_S24_Ultra.zip
+
+# ============================================================
+# Build-Ausgaben - werden beim Bauen neu erzeugt
+# ============================================================
+
+# Maven (Backend)
+target/
+
+# Gradle (Frontend)
+.gradle/
+build/
+.cxx/
+.externalNativeBuild/
+captures/
+
+# ============================================================
+# Archive, Backups und Zwischenstände
+# ============================================================
+
+LernAppBackup.zip
+*.bkp
+.$*
+*.bak
+
+# Gesicherte alte Git-History des Backends (vor dem Neuaufsetzen des Repos)
+.git.backup/
+
+# Leere Artefakte aus PowerShell-Umleitungen (z.B. "curl ... > 201")
+LernAppBackend/201
+LernAppBackend/204
+
+# ============================================================
+# Interne Notizen und Arbeitsdateien
+# ============================================================
+
+AufgabeStellung.txt
+Funktional_Tests.txt
+SQL_Befehle.md
+SQL_Befehle.txt
+ER-Diagramm.drawio
+lernappdb.sql
+
+# ============================================================
+# Betriebssystem
+# ============================================================
+
+.DS_Store
+Thumbs.db
+desktop.ini

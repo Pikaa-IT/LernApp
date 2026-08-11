@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    activity_main.xml — Layout für MainActivity.
+
+    WICHTIG: Dieses Layout wird in der App NIE angezeigt.
+    MainActivity ist toter Code — der echte Startbildschirm ist
+    ThemaListActivity (im AndroidManifest als LAUNCHER eingetragen).
+
+    Dieses Layout wurde automatisch von Android Studio beim Erstellen
+    des Projekts generiert und nie angepasst. Es kann bedenkenlos
+    ignoriert oder gelöscht werden.
+-->
+
+<!--
+    ConstraintLayout — das flexibelste Layout in Android.
+
+    Anders als LinearLayout (das Kinder einfach nebeneinander oder
+    untereinander stapelt) positioniert ConstraintLayout jedes Kind
+    relativ zu anderen Elementen oder zum Eltern-Container.
+    Jedes Element bekommt "Constraints" (Verbindungen/Einschränkungen),
+    die seinen Platz im Layout definieren.
+
+    Hier wird es nur für das automatisch generierte "Hello World!" verwendet.
+
+    xmlns:android = Standard-Android-Namespace, Pflicht im Wurzel-Element.
+    xmlns:app = Namespace für zusätzliche Attribute (hier: app:layout_constraint*).
+                Ohne diesen Namespace würden die Constraint-Attribute nicht erkannt.
+    xmlns:tools = Namespace für Attribute, die NUR im Android Studio Layout-Editor
+                  wirken, aber zur Laufzeit ignoriert werden.
+                  Hier: tools:context=".MainActivity" sagt dem Editor, welche
+                  Activity dieses Layout verwendet — nur für die Vorschau relevant.
+
+    android:id="@+id/main" = die ID dieses Layouts.
+    Wird in MainActivity.onCreate() verwendet:
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), ...)
+    um den Edge-to-Edge-Padding korrekt zu setzen.
+
+    match_parent bei width und height = füllt den gesamten Bildschirm aus.
+-->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!--
+        "Hello World!" TextView — automatisch generierter Platzhaltertext.
+        Wird nie angezeigt, da MainActivity nie gestartet wird.
+
+        Die vier app:layout_constraint*-Attribute zentrieren die TextView
+        exakt in der Mitte des Bildschirms — ein typisches ConstraintLayout-Muster:
+
+        layout_constraintTop_toTopOf="parent"    = Oberkante → Oberkante des Elternelements
+        layout_constraintBottom_toBottomOf="parent" = Unterkante → Unterkante des Elternelements
+        → vertikal zentriert (zwischen oben und unten eingespannt)
+
+        layout_constraintStart_toStartOf="parent" = Linke Kante → Linke Kante des Elternelements
+        layout_constraintEnd_toEndOf="parent"     = Rechte Kante → Rechte Kante des Elternelements
+        → horizontal zentriert (zwischen links und rechts eingespannt)
+
+        "Start" und "End" statt "Left" und "Right" weil Android
+        RTL-Sprachen (rechts nach links) unterstützt — bei RTL
+        ist Start rechts und End links.
+
+        layout_width="wrap_content" = nur so breit wie der Text.
+        layout_height="wrap_content" = nur so hoch wie der Text.
+    -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    ANDROID MANIFEST
+    Diese Datei ist die Steuerzentrale jeder Android-App.
+    Android liest sie beim Installieren und beim Starten der App.
+    Hier wird deklariert:
+      - welche Berechtigungen die App braucht (z.B. Internet)
+      - wie die App heißt und aussieht (Icon, Theme)
+      - welche Bildschirme (Activities) es gibt
+      - welcher Bildschirm als erstes geöffnet wird
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--
+        xmlns:android ist ein XML-Namespace.
+        Er sagt: alle Attribute mit "android:" kommen aus dem Android-System.
+        Ohne diese Zeile würde Android die Attribute nicht verstehen.
+    -->
+
+    <!--
+        INTERNET-BERECHTIGUNG
+        Android-Apps dürfen standardmäßig nichts — kein Internet, keine Kamera usw.
+        Jede Funktion muss hier explizit beantragt werden.
+        Ohne diese Zeile bricht jeder Netzwerkaufruf sofort mit einem Fehler ab.
+        Wir brauchen es, damit die App unseren Spring-Boot-Backend erreichen kann.
+    -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!--
+        APPLICATION-TAG
+        Alles innerhalb von <application> beschreibt die App als Ganzes.
+        Die Attribute hier gelten für alle Activities innerhalb der App.
+
+        android:allowBackup="true"
+            Erlaubt Android, App-Daten automatisch zu sichern (z.B. Google Drive).
+
+        android:dataExtractionRules="@xml/data_extraction_rules"
+            Verweist auf res/xml/data_extraction_rules.xml — definiert, welche Daten
+            beim Cloud-Backup gesichert werden dürfen (für Android 12+).
+
+        android:fullBackupContent="@xml/backup_rules"
+            Gleicher Zweck wie dataExtractionRules, aber für ältere Android-Versionen.
+            Beide zusammen decken alle Android-Versionen ab.
+
+        android:icon="@mipmap/ic_launcher"
+            Das App-Icon im Launcher (Startbildschirm des Handys).
+            @mipmap verweist auf Grafikdateien in verschiedenen Auflösungen —
+            Android wählt automatisch die passende Größe für das jeweilige Gerät.
+
+        android:label="LernApp"
+            Der Name der App, wie er unter dem Icon angezeigt wird.
+
+        android:roundIcon="@mipmap/ic_launcher_round"
+            Viele Hersteller zeigen Icons in runder Form.
+            Android wählt automatisch, ob icon oder roundIcon verwendet wird.
+
+        android:supportsRtl="true"
+            Unterstützung für Sprachen, die von rechts nach links geschrieben werden
+            (Arabisch, Hebräisch). Für Deutsch kein sichtbarer Effekt, aber Best Practice.
+
+        android:theme="@style/Theme.MeinApplication"
+            Das visuelle Design der gesamten App (Farben, Schriften, etc.).
+            Verweist auf einen Eintrag in res/values/themes.xml.
+
+        android:usesCleartextTraffic="true"
+            WICHTIG für uns! Seit Android 9 blockiert Android unverschlüsseltes HTTP.
+            Da unser Backend über http://10.0.2.2:8080 läuft (kein HTTPS),
+            müssen wir hier HTTP explizit erlauben.
+            In einer echten Produktions-App würde man HTTPS verwenden!
+    -->
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="LernApp"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MeinApplication"
+        android:usesCleartextTraffic="true">
+
+        <!--
+            STARTBILDSCHIRM
+            Jede Activity = ein Bildschirm der App.
+            Jede Activity MUSS hier registriert sein — sonst stürzt die App ab.
+
+            android:name=".ThemaListActivity"
+                Der Klassenname der Activity. Der Punkt am Anfang ist eine Abkürzung —
+                Android ergänzt automatisch den Paketnamen davor.
+
+            android:exported="true"
+                Darf diese Activity vom Android-System gestartet werden?
+                true ist Pflicht, wenn ein intent-filter vorhanden ist (seit Android 12).
+        -->
+        <activity
+            android:name=".ThemaListActivity"
+            android:exported="true">
+
+            <!--
+                intent-filter: Definiert, auf welche "Absichten" diese Activity reagiert.
+                Diese Kombination aus action.MAIN + category.LAUNCHER hat eine
+                spezielle Bedeutung: Sie markiert ThemaListActivity als Einstiegspunkt —
+                der Bildschirm, der erscheint, wenn der Nutzer auf das App-Icon tippt.
+                Genau eine Activity pro App sollte diesen intent-filter haben.
+
+                action.MAIN    = "Das ist die Hauptaktion, sie braucht keine Eingabedaten."
+                category.LAUNCHER = "Zeige ein Icon im Startbildschirm des Handys."
+            -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--
+            FrageListActivity: Zeigt die Liste der Fragen zu einem Thema.
+            Kein intent-filter nötig — wird intern von ThemaListActivity per Intent gestartet.
+            Ohne Registrierung hier würde die App beim Öffnen dieses Bildschirms abstürzen.
+        -->
+        <activity android:name=".FrageListActivity" />
+
+        <!--
+            FrageDetailActivity: Zeigt die Detailansicht einer einzelnen Frage.
+            Gleiche Logik wie FrageListActivity — wird intern gestartet,
+            kein Launcher-Eintrag nötig.
+        -->
+        <activity android:name=".FrageDetailActivity" />
+
+    </application>
+
+</manifest>

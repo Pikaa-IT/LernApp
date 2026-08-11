@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    item_frage_detail.xml — Layout für eine einzelne Fragekarte im ViewPager2.
+
+    Dieses Layout wird für JEDE Frage einmal verwendet — FrageDetailAdapter
+    lädt es in onCreateViewHolder() per LayoutInflater.inflate().
+
+    Drei Bereiche, vertikal gestapelt:
+      1. Blaue Fragekarte (oben, nimmt die Hälfte des Platzes)
+      2. Button "Antwort anzeigen / verbergen" (Mitte, feste Höhe)
+      3. Grüne Antwortkarte (unten, nimmt die andere Hälfte — standardmäßig unsichtbar)
+
+    Das Wurzel-LinearLayout hat padding="16dp" = Abstand zum Bildschirmrand
+    an allen Seiten, damit die Karten nicht am Rand kleben.
+    background="#F5F5F5" = hellgrau, sichtbar als Hintergrund hinter den Karten.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5"
+    android:padding="16dp">
+
+    <!--
+        FRAGEKARTE — zeigt den Fragetext.
+
+        CardView = ein erhöhtes, abgerundetes Rechteck (Material Design Karte).
+        Gibt dem Inhalt einen weißen (hier hellblauen) Hintergrund mit
+        Schatten (Elevation) und abgerundeten Ecken.
+
+        layout_height="0dp" + layout_weight="1":
+        Das Muster aus activity_frage_detail.xml — 0dp bedeutet "kein fixer Wert",
+        layout_weight="1" bedeutet "nimm den verfügbaren Platz anteilig".
+        Da beide CardViews layout_weight="1" haben und der Button eine feste
+        Höhe hat, teilen die beiden Karten den verbleibenden Platz gleichmäßig
+        auf (je 50% minus halber Button-Höhe).
+
+        layout_marginBottom="8dp" = Abstand zwischen Fragekarte und Button.
+
+        xmlns:app hier deklariert = technisch korrekt, aber unüblich.
+        Normalerweise steht xmlns:app im Wurzel-Element. Hier wurde es
+        in der CardView deklariert, was funktioniert, aber weniger sauber ist.
+
+        app:cardCornerRadius="20dp" = stark abgerundete Ecken.
+        app:cardElevation="8dp" = Schatten unter der Karte (Tiefenwirkung).
+        app:cardBackgroundColor="#E3F2FD" = sehr helles Blau (Material Blue 50).
+    -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="8dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="#E3F2FD">
+
+        <!--
+            Inneres LinearLayout der Fragekarte.
+            gravity="center" = der Inhalt wird horizontal UND vertikal
+            in der Karte zentriert — der Fragetext erscheint in der Mitte der Karte.
+            padding="24dp" = Innenabstand zwischen Kartenrand und Text.
+        -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:gravity="center">
+
+            <!--
+                ScrollView — macht den Fragetext scrollbar.
+                Nötig für sehr lange Fragen, die nicht vollständig
+                in die Karte passen würden. Ohne ScrollView würde
+                der Text einfach abgeschnitten.
+
+                layout_height="wrap_content" = ScrollView ist nur so hoch
+                wie nötig. In Kombination mit gravity="center" im Eltern-
+                LinearLayout wird die ScrollView vertikal zentriert.
+            -->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!--
+                    Der eigentliche Fragetext.
+                    Wird in FrageDetailAdapter gesetzt:
+                    holder.textViewFrage.setText(frage.getFrageText())
+
+                    textSize="18sp" = gut lesbare Schriftgröße für Fragen.
+                    textColor="#1A1A1A" = fast schwarz, hoher Kontrast auf hellblauem Hintergrund.
+                    textStyle="bold" = fett, hebt die Frage visuell hervor.
+                    gravity="center" = Text innerhalb der TextView zentriert.
+                    lineSpacingMultiplier="1.4" = 40% mehr Zeilenabstand als normal,
+                    verbessert die Lesbarkeit bei mehrzeiligen Fragen.
+                -->
+                <TextView
+                    android:id="@+id/textViewFrage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="#1A1A1A"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.4"/>
+
+            </ScrollView>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!--
+        BUTTON — schaltet die Antwortkarte ein und aus.
+
+        Feste Höhe von 56dp = Standard-Höhe für Material-Buttons (gut tippbar).
+        Kein layout_weight = der Button nimmt keinen variablen Platz,
+        nur seine feste Höhe. Die beiden CardViews teilen den Rest auf.
+
+        layout_marginBottom="8dp" = Abstand zwischen Button und Antwortkarte.
+
+        backgroundTint="#1565C0" = blaue Hintergrundfarbe (Material Blue 800).
+        textColor="#FFFFFF" = weißer Text.
+
+        Der Klick-Listener wird NICHT hier im XML gesetzt, sondern in
+        FrageDetailAdapter.onBindViewHolder():
+        holder.buttonUmdrehen.setOnClickListener(v -> { ... })
+        Das ist der korrekte Weg — XML onClick-Attribute gelten als veraltet.
+    -->
+    <Button
+        android:id="@+id/buttonUmdrehen"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginBottom="8dp"
+        android:text="Antwort anzeigen"
+        android:textSize="16sp"
+        android:backgroundTint="#1565C0"
+        android:textColor="#FFFFFF"/>
+
+    <!--
+        ANTWORTKARTE — zeigt die Antworten zur Frage.
+
+        Standardmäßig unsichtbar (visibility="gone") — wird erst eingeblendet,
+        wenn der Nutzer auf den Button tippt.
+
+        visibility="gone" = unsichtbar UND nimmt keinen Platz ein.
+        Dadurch füllt die Fragekarte oben den gesamten verfügbaren Platz
+        (ihr layout_weight="1" teilt sich nur mit sichtbaren Elementen).
+        Wenn die Antwortkarte eingeblendet wird (VISIBLE), teilen beide
+        Karten den Platz gleichmäßig.
+
+        Gesteuert in FrageDetailAdapter:
+            holder.cardViewAntworten.setVisibility(View.GONE)    → ausblenden
+            holder.cardViewAntworten.setVisibility(View.VISIBLE) → einblenden
+
+        app:cardBackgroundColor="#E8F5E9" = sehr helles Grün (Material Green 50),
+        visuell klar von der blauen Fragekarte unterscheidbar.
+        Gleiche cardCornerRadius und cardElevation wie die Fragekarte.
+    -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewAntworten"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="#E8F5E9"
+        android:visibility="gone">
+
+        <!--
+            ScrollView in der Antwortkarte — scrollbar bei langen Antworten.
+            layout_height="match_parent" = füllt die gesamte Karte aus,
+            damit die Scrollfläche die volle Kartenhöhe nutzt.
+        -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--
+                Inneres LinearLayout der Antwortkarte.
+                wrap_content bei height = wächst mit dem Inhalt (nötig für ScrollView).
+                padding="24dp" = Innenabstand zum Kartenrand.
+            -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <!--
+                    Feste Beschriftung "✅ Antwort" — ändert sich nie.
+                    Kein android:id nötig, da der Adapter diesen Text nicht anfasst.
+
+                    textColor="#2E7D32" = dunkles Grün (Material Green 800),
+                    passend zum grünen Kartenhintergrund.
+                    layout_marginBottom="16dp" = Abstand zum Antworttext darunter.
+                -->
+                <TextView
+                    android:text="✅ Antwort"
+                    android:textSize="14sp"
+                    android:textColor="#2E7D32"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"/>
+
+                <!--
+                    Der eigentliche Antworttext.
+                    Wird in FrageDetailAdapter.ladeAntworten() gesetzt:
+                    holder.textViewAntworten.setText(sb.toString().trim())
+
+                    textSize="16sp" = etwas kleiner als die Frage (18sp),
+                    da Antworten oft länger sind und mehr Platz brauchen.
+                    lineSpacingMultiplier="1.4" = gleicher Zeilenabstand wie
+                    beim Fragetext, für konsistente Lesbarkeit.
+                    textColor="#1A1A1A" = gleiche Farbe wie Fragetext.
+                -->
+                <TextView
+                    android:id="@+id/textViewAntworten"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="#1A1A1A"
+                    android:lineSpacingMultiplier="1.4"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

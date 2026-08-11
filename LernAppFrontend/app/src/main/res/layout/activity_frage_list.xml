@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    activity_frage_list.xml — Layout für FrageListActivity.
+
+    Zeigt alle Fragen eines Themas als scrollbare Liste.
+    Zwei Bereiche, vertikal gestapelt:
+      1. Blauer Header mit Themaname und Hinweistext
+      2. RecyclerView mit der Fragenliste
+
+    Wurzel-LinearLayout füllt den gesamten Bildschirm,
+    Kinder werden von oben nach unten gestapelt.
+    background="#F5F5F5" = hellgrauer Hintergrund, sichtbar
+    zwischen den Listenelementen und unter der Liste.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!--
+        HEADER — zeigt den Themanamen und einen Hinweistext.
+
+        Vertikales LinearLayout als blauer Balken oben.
+        Zwei TextViews untereinander:
+          oben:  Themaname (groß, weiß, fett) — aus dem Intent gesetzt
+          unten: "Tippe auf eine Frage zum Lernen" (klein, hellblau, fest)
+
+        orientation="vertical" = Kinder untereinander statt nebeneinander.
+        Unterschied zu activity_frage_detail.xml, wo der Header
+        horizontal war (Nummer links, Count rechts).
+        padding="24dp" = Innenabstand an allen vier Seiten.
+    -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#1565C0"
+        android:padding="24dp"
+        android:orientation="vertical">
+
+        <!--
+            Themaname — wird in FrageListActivity dynamisch gesetzt:
+            textViewThemaName.setText(themaName)
+            themaName kommt per Intent von ThemaListActivity.
+
+            Kein android:text hier — der Platzhaltertext würde
+            nur im Layout-Editor angezeigt, zur Laufzeit wird er
+            sofort durch den echten Themanamen ersetzt.
+            Besser wäre android:text="@tools:sample/lorem" für
+            den Editor, aber so funktioniert es auch.
+
+            textSize="22sp" = große Hauptüberschrift.
+            textStyle="bold" = fett.
+            textColor="#FFFFFF" = weiß auf blauem Hintergrund.
+            layout_width="wrap_content" = nur so breit wie der Text.
+        -->
+        <TextView
+            android:id="@+id/textViewThemaName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"/>
+
+        <!--
+            Hinweistext — fest, ändert sich nie zur Laufzeit.
+            Kein android:id nötig, da FrageListActivity diesen
+            Text nicht anfasst.
+
+            textSize="13sp" = klein, weniger wichtig als der Themaname.
+            textColor="#90CAF9" = hellblau (Material Blue 200),
+                                  visuell abgestuft gegenüber dem weißen Titel.
+            layout_marginTop="4dp" = kleiner Abstand zum Themanamen darüber.
+            dp für Abstände, sp nur für Schriftgrößen.
+        -->
+        <TextView
+            android:text="Tippe auf eine Frage zum Lernen"
+            android:textSize="13sp"
+            android:textColor="#90CAF9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"/>
+
+    </LinearLayout>
+
+    <!--
+        RECYCLERVIEW — die scrollbare Fragenliste.
+
+        Füllt den gesamten verbleibenden Platz unterhalb des Headers aus.
+        In FrageListActivity wird ihr ein LinearLayoutManager und
+        ein FrageAdapter zugewiesen:
+            recyclerView.setLayoutManager(new LinearLayoutManager(this))
+            recyclerView.setAdapter(adapter)
+
+        layout_height="match_parent" = gesamter verbleibender Platz.
+
+        padding="12dp" = Innenabstand zwischen RecyclerView-Rand
+        und den Listenelementen — die Karten "schweben" etwas
+        vom Bildschirmrand entfernt.
+
+        clipToPadding="false" = WICHTIG in Kombination mit padding:
+        Ohne diese Zeile würde das padding den scrollbaren Bereich
+        verkleinern — das letzte Listenelement wäre am unteren Rand
+        abgeschnitten und nicht vollständig sichtbar.
+        Mit clipToPadding="false" kann die Liste bis hinter das
+        padding scrollen, das Element ist vollständig sichtbar,
+        und das padding wirkt nur als Startabstand.
+    -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewFragen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="12dp"
+        android:clipToPadding="false"/>
+
+</LinearLayout>
