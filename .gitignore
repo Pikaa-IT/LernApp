@@ -74,7 +74,9 @@ Funktional_Tests.txt
 SQL_Befehle.md
 SQL_Befehle.txt
 ER-Diagramm.drawio
-lernappdb.sql
+
+# lernappdb.sql ist bewusst NICHT ausgeschlossen: ohne den Dump laesst sich
+# die Datenbank nicht aufsetzen (siehe Abschnitt 4 des Backend-READMEs).
 
 # ============================================================
 # Betriebssystem
