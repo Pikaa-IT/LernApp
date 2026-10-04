@@ -24,7 +24,7 @@ INHALTSVERZEICHNIS
   1. PROJEKTBESCHREIBUNG
 ================================================================================
 
-Die LernApp ist eine REST API zur Verwaltung von Lernkarten fuer die
+Die LernApp ist eine REST API zur Verwaltung von Lernkarten für die
 Prüfungsvorbereitung zum Fachinformatiker Anwendungsentwicklung.
 
 Das System besteht aus:

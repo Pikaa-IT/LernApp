@@ -32,8 +32,8 @@ public class Thema {
     private String name;
 
     // JPA-Annotation: Eine unmissverständliche Kurzbeschreibung des Themas.
-    // 'length = 200' spiegelt die Validierung deines ThemaCreateRequests wider.
-    @Column(nullable = false, length = 200)
+    // 'length = 500' spiegelt die Validierung deines ThemaCreateRequests wider.
+    @Column(nullable = false, length = 500)
     private String beschreibung;
 
     @OneToMany(mappedBy = "thema", cascade = CascadeType.ALL, orphanRemoval = true)
